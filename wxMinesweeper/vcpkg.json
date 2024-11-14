@@ -1,0 +1,10 @@
+{
+  "dependencies": [
+    {
+      "name": "wxwidgets",
+      "features": [
+        "webview"
+      ]
+    }
+  ]
+}
