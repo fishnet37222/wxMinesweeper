@@ -5,6 +5,11 @@
 #include "pch.h"
 #include "MainWindow.h"
 
+#include "Bitmaps/smile-1.xpm"
+#include "Bitmaps/smile-2.xpm"
+#include "Bitmaps/smile-3.xpm"
+#include "Bitmaps/smile-4.xpm"
+
 enum MenuId : uint16_t
 {
 	ID_GAME_NEW = wxID_HIGHEST + 1,
@@ -52,6 +57,32 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxDefaultPo
 
 	auto* szrMainInner = new wxBoxSizer(wxVERTICAL);
 	szrMainInner->AddSpacer(5);
+
+	auto* szrTop = new wxBoxSizer(wxHORIZONTAL);
+
+	m_ssdMinesLeft = new SevenSegmentDisplay(this);
+	szrTop->Add(m_ssdMinesLeft, wxSizerFlags(0).CenterVertical());
+
+	szrTop->AddStretchSpacer(1);
+	szrTop->AddSpacer(5);
+
+	m_btnNewGame = new wxBitmapButton(this, wxID_ANY, wxBitmapBundle::FromBitmap(wxBitmap(smile_1_xpm)));
+	szrTop->Add(m_btnNewGame, wxSizerFlags(0).CenterVertical());
+
+	szrTop->AddSpacer(5);
+	szrTop->AddStretchSpacer(1);
+
+	m_ssdElapsedTime = new SevenSegmentDisplay(this);
+	szrTop->Add(m_ssdElapsedTime, wxSizerFlags(0).CenterVertical());
+
+	szrMainInner->Add(szrTop, wxSizerFlags(0).Expand());
+
+	szrMainInner->AddSpacer(5);
+
+	m_mineField = new MineField(this);
+	szrMainInner->Add(m_mineField, wxSizerFlags(0).CenterHorizontal());
+
+
 	szrMainInner->AddSpacer(12);
 	szrMainOuter->Add(szrMainInner, wxSizerFlags(1).Expand());
 

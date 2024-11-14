@@ -44,6 +44,18 @@
     <None Include="vcpkg-configuration.json">
       <Filter>vcpkg</Filter>
     </None>
+    <None Include="Bitmaps\smile-1.xpm">
+      <Filter>Bitmaps</Filter>
+    </None>
+    <None Include="Bitmaps\smile-2.xpm">
+      <Filter>Bitmaps</Filter>
+    </None>
+    <None Include="Bitmaps\smile-3.xpm">
+      <Filter>Bitmaps</Filter>
+    </None>
+    <None Include="Bitmaps\smile-4.xpm">
+      <Filter>Bitmaps</Filter>
+    </None>
     <None Include="Bitmaps\explosion-small.xpm">
       <Filter>Bitmaps</Filter>
     </None>

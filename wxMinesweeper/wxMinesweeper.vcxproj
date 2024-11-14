@@ -88,6 +88,10 @@
   <ItemGroup>
     <None Include="Bitmaps\explosion-small.xpm" />
     <None Include="Bitmaps\flag-small.xpm" />
+    <None Include="Bitmaps\smile-1.xpm" />
+    <None Include="Bitmaps\smile-2.xpm" />
+    <None Include="Bitmaps\smile-3.xpm" />
+    <None Include="Bitmaps\smile-4.xpm" />
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />
   </ItemGroup>
