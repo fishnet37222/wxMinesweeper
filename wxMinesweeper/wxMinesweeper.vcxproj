@@ -81,16 +81,20 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="MineField.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SevenSegmentDisplay.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bitmaps\explosion-small.xpm" />
+    <None Include="Bitmaps\flag-small.xpm" />
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="MineField.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
