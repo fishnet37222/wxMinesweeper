@@ -82,6 +82,7 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="SevenSegmentDisplay.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg-configuration.json" />
@@ -94,6 +95,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="SevenSegmentDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bomb.ico" />
