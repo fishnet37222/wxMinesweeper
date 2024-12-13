@@ -26,6 +26,8 @@ MineField::MineField(wxWindow* parent)
 	Bind(wxEVT_RIGHT_UP, &MineField::MineField_OnRightUp, this);
 	Bind(wxEVT_LEFT_UP, &MineField::MineField_OnLeftUp, this);
 	Bind(wxEVT_LEFT_DCLICK, &MineField::MineField_OnLeftDoubleClick, this);
+	Bind(wxEVT_LEFT_DOWN, &MineField::MineField_OnLeftDown, this);
+	Bind(wxEVT_MOTION, &MineField::MineField_OnMouseMove, this);
 }
 
 void MineField::MineField_OnPaint([[maybe_unused]] wxPaintEvent& event)
@@ -49,7 +51,35 @@ void MineField::MineField_OnPaint([[maybe_unused]] wxPaintEvent& event)
 			const auto& [isMine, isFlagged, isRevealed, wasClicked, adjacentMineCount] = row[cellX];
 			const auto cellOriginX = m_cellSize.GetWidth() * cellX;
 
-			if (!isRevealed)
+			if (const auto isHoveredCell = m_mouseLeftDown && cellX == m_hoveredCell.x && cellY == m_hoveredCell.y; isRevealed || (isHoveredCell && !isFlagged))
+			{
+				gc->SetPen(GetForegroundColour());
+				gc->SetBrush(GetBackgroundColour());
+				if (wasClicked && !isHoveredCell)
+				{
+					gc->SetBrush(wxTheColourDatabase->Find("RED"));
+				}
+				gc->DrawRectangle(cellOriginX, cellOriginY, m_cellSize.GetWidth(), m_cellSize.GetHeight());
+
+				if (!isHoveredCell)
+				{
+					if (isMine)
+					{
+						gc->DrawBitmap(m_bmpExplosion, cellOriginX, cellOriginY, m_cellSize.GetWidth(), m_cellSize.GetHeight());
+					}
+					else if (adjacentMineCount > 0)
+					{
+						const auto text = std::to_string(adjacentMineCount);
+						double textWidth, textHeight;
+						gc->SetFont(GetFont().Bold(), GetForegroundColour());
+						gc->GetTextExtent(text, &textWidth, &textHeight, nullptr, nullptr);
+						const auto textOriginX = cellOriginX + (m_cellSize.GetWidth() / 2.0 - textWidth / 2.0);
+						const auto textOriginY = cellOriginY + (m_cellSize.GetHeight() / 2.0 - textHeight / 2.0);
+						gc->DrawText(text, textOriginX, textOriginY);
+					}
+				}
+			}
+			else
 			{
 				for (auto i = 0; i < 3; i++)
 				{
@@ -64,31 +94,6 @@ void MineField::MineField_OnPaint([[maybe_unused]] wxPaintEvent& event)
 				if (isFlagged)
 				{
 					gc->DrawBitmap(m_bmpFlag, cellOriginX + 3, cellOriginY + 3, m_cellSize.GetWidth() - 6, m_cellSize.GetHeight() - 6);
-				}
-			}
-			else
-			{
-				gc->SetPen(GetForegroundColour());
-				gc->SetBrush(GetBackgroundColour());
-				if (wasClicked)
-				{
-					gc->SetBrush(wxTheColourDatabase->Find("RED"));
-				}
-				gc->DrawRectangle(cellOriginX, cellOriginY, m_cellSize.GetWidth(), m_cellSize.GetHeight());
-
-				if (isMine)
-				{
-					gc->DrawBitmap(m_bmpExplosion, cellOriginX, cellOriginY, m_cellSize.GetWidth(), m_cellSize.GetHeight());
-				}
-				else if (adjacentMineCount > 0)
-				{
-					const auto text = std::to_string(adjacentMineCount);
-					double textWidth, textHeight;
-					gc->SetFont(GetFont().Bold(), GetForegroundColour());
-					gc->GetTextExtent(text, &textWidth, &textHeight, nullptr, nullptr);
-					const auto textOriginX = cellOriginX + (m_cellSize.GetWidth() / 2.0 - textWidth / 2.0);
-					const auto textOriginY = cellOriginY + (m_cellSize.GetHeight() / 2.0 - textHeight / 2.0);
-					gc->DrawText(text, textOriginX, textOriginY);
 				}
 			}
 		}
@@ -195,9 +200,13 @@ void MineField::MineField_OnRightUp(wxMouseEvent& event)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 void MineField::MineField_OnLeftUp(wxMouseEvent& event)
 {
+	event.Skip();
+	ReleaseMouse();
+	m_mouseLeftDown = false;
+
 	const auto gridCoords = GetFieldCoordinatesFromClientCoordinates(event);
 
-	if (gridCoords.x < 0 || gridCoords.x > m_fieldSize.GetWidth() || gridCoords.y < 0 || gridCoords.y > m_fieldSize.GetHeight()) return;
+	if (gridCoords.x < 0 || gridCoords.x >= m_fieldSize.GetWidth() || gridCoords.y < 0 || gridCoords.y >= m_fieldSize.GetHeight()) return;
 
 	if (const auto& [isMine, isFlagged, isRevealed, wasClicked, adjacentMineCount] = m_field[gridCoords.y][gridCoords.x]; isRevealed || isFlagged) return;
 
@@ -304,5 +313,21 @@ void MineField::MineField_OnLeftDoubleClick(wxMouseEvent& event)
 			RevealCells({ x,y });
 		}
 	}
+	Refresh();
+}
+
+void MineField::MineField_OnLeftDown(wxMouseEvent& event)
+{
+	event.Skip();
+	CaptureMouse();
+	m_mouseLeftDown = true;
+	m_hoveredCell = GetFieldCoordinatesFromClientCoordinates(event);
+	Refresh();
+}
+
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
+void MineField::MineField_OnMouseMove(wxMouseEvent& event)
+{
+	m_hoveredCell = GetFieldCoordinatesFromClientCoordinates(event);
 	Refresh();
 }

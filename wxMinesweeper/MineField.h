@@ -38,6 +38,8 @@ private:
 	wxBitmap m_bmpFlag;
 	wxBitmap m_bmpExplosion;
 	std::vector<wxPoint> m_mineLocations;
+	bool m_mouseLeftDown{ false };
+	wxPoint m_hoveredCell{};
 
 	void MineField_OnPaint(wxPaintEvent& event);
 	[[nodiscard]] wxSize DoGetBestClientSize() const override;
@@ -48,4 +50,6 @@ private:
 	wxPoint GetFieldCoordinatesFromClientCoordinates(const wxMouseEvent& event);
 	void RevealCells(wxPoint point);
 	void MineField_OnLeftDoubleClick(wxMouseEvent& event);
+	void MineField_OnLeftDown(wxMouseEvent& event);
+	void MineField_OnMouseMove(wxMouseEvent& event);
 };
