@@ -20,4 +20,6 @@ private:
 	MineField* m_mineField{};
 
 	void MenuBar_OnItemSelect(wxCommandEvent& event);
+	void MineField_OnLeftDown(wxMouseEvent& event);
+	void MineField_OnLeftUp(wxMouseEvent& event);
 };

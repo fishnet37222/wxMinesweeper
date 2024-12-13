@@ -80,8 +80,9 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxDefaultPo
 	szrMainInner->AddSpacer(5);
 
 	m_mineField = new MineField(this);
+	m_mineField->Bind(wxEVT_LEFT_DOWN, &MainWindow::MineField_OnLeftDown, this);
+	m_mineField->Bind(wxEVT_LEFT_UP, &MainWindow::MineField_OnLeftUp, this);
 	szrMainInner->Add(m_mineField, wxSizerFlags(0).CenterHorizontal());
-
 
 	szrMainInner->AddSpacer(12);
 	szrMainOuter->Add(szrMainInner, wxSizerFlags(1).Expand());
@@ -114,4 +115,18 @@ void MainWindow::MenuBar_OnItemSelect(wxCommandEvent& event)
 		default:
 			break;
 	}
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void MainWindow::MineField_OnLeftDown([[maybe_unused]] wxMouseEvent& event)
+{
+	event.Skip();
+	m_btnNewGame->SetBitmap(wxBitmapBundle::FromBitmap(wxBitmap(smile_4_xpm)));
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void MainWindow::MineField_OnLeftUp([[maybe_unused]] wxMouseEvent& event)
+{
+	event.Skip();
+	m_btnNewGame->SetBitmap(wxBitmapBundle::FromBitmap(wxBitmap(smile_1_xpm)));
 }
