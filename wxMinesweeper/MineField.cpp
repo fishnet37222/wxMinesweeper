@@ -211,8 +211,18 @@ wxPoint MineField::GetFieldCoordinatesFromClientCoordinates(const wxMouseEvent& 
 	const wxWindowDC dc(this);
 	const auto logicalPosition = event.GetLogicalPosition(dc);
 
-	const auto gridX = logicalPosition.x / m_cellSize.GetWidth();
-	const auto gridY = logicalPosition.y / m_cellSize.GetHeight();
+	auto gridX = abs(logicalPosition.x) / m_cellSize.GetWidth();
+	auto gridY = abs(logicalPosition.y) / m_cellSize.GetHeight();
+
+	if (logicalPosition.x < 0)
+	{
+		gridX = -1;
+	}
+
+	if (logicalPosition.y < 0)
+	{
+		gridY = -1;
+	}
 
 	return { gridX, gridY };
 }
