@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="vcpkg">
-      <UniqueIdentifier>{e19918ae-83c6-4ff7-bab5-04ac6e5dafc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Bitmaps">
       <UniqueIdentifier>{857aadef-8c45-4e71-8ea2-754d056c0489}</UniqueIdentifier>
     </Filter>
@@ -38,12 +35,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vcpkg.json">
-      <Filter>vcpkg</Filter>
-    </None>
-    <None Include="vcpkg-configuration.json">
-      <Filter>vcpkg</Filter>
-    </None>
     <None Include="Bitmaps\smile-1.xpm">
       <Filter>Bitmaps</Filter>
     </None>
