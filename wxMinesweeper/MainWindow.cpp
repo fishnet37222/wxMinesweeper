@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "MainWindow.h"
+#include <wx/config.h>
 
 #include "Bitmaps/smile-1.xpm"
 #include "Bitmaps/smile-2.xpm"
@@ -90,7 +91,21 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxDefaultPo
 	szrMainOuter->AddSpacer(12);
 	SetSizerAndFit(szrMainOuter);
 
+	const auto* config = wxConfig::Get();
+	const auto posX = config->ReadLong("MainWindowPosX", -1);
+	// ReSharper disable once CppTooWideScopeInitStatement
+	const auto posY = config->ReadLong("MainWindowPosY", -1);
+
+	if (posX == -1 && posY == -1)
+	{
 	CenterOnScreen();
+}
+	else
+	{
+		SetPosition({ posX, posY });
+	}
+
+	Bind(wxEVT_CLOSE_WINDOW, &MainWindow::MainWindow_OnClose, this);
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
@@ -129,4 +144,16 @@ void MainWindow::MineField_OnLeftUp([[maybe_unused]] wxMouseEvent& event)
 {
 	event.Skip();
 	m_btnNewGame->SetBitmap(wxBitmapBundle::FromBitmap(wxBitmap(smile_1_xpm)));
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void MainWindow::MainWindow_OnClose([[maybe_unused]] wxCloseEvent& event)
+{
+	auto* config = wxConfig::Get();
+	const auto pos = GetPosition();
+
+	config->Write("MainWindowPosX", pos.x);
+	config->Write("MainWindowPosY", pos.y);
+
+	Destroy();
 }

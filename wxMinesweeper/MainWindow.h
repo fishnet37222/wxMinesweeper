@@ -22,4 +22,5 @@ private:
 	void MenuBar_OnItemSelect(wxCommandEvent& event);
 	void MineField_OnLeftDown(wxMouseEvent& event);
 	void MineField_OnLeftUp(wxMouseEvent& event);
+	void MainWindow_OnClose(wxCloseEvent& event);
 };
