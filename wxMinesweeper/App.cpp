@@ -12,6 +12,9 @@ bool App::OnInit()
 {
 	if (!wxApp::OnInit()) return false;
 
+	SetAppName("wxMinesweeper");
+	SetVendorName("FishNetSoft");
+
 	auto* mainWindow = new MainWindow();
 	SetTopWindow(mainWindow);
 	mainWindow->Show();
