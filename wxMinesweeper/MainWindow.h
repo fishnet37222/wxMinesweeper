@@ -19,6 +19,9 @@ private:
 	wxBitmapButton* m_btnNewGame{};
 	MineField* m_mineField{};
 	int m_gameDifficulty{};
+	int m_customFieldWidth{};
+	int m_customFieldHeight{};
+	int m_customMineCount{};
 
 	void MenuBar_OnItemSelect(wxCommandEvent& event);
 	void MineField_OnLeftDown(wxMouseEvent& event);

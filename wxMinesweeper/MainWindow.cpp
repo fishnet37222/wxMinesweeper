@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "MainWindow.h"
 #include <wx/config.h>
+#include "CustomFieldDialog.h"
 
 #include "Bitmaps/smile-1.xpm"
 #include "Bitmaps/smile-2.xpm"
@@ -107,6 +108,9 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxDefaultPo
 
 	m_gameDifficulty = config->ReadLong("GameDifficulty", ID_GAME_BEGINNER);
 	m_menuBar->Check(m_gameDifficulty, true);
+	m_customFieldWidth = config->ReadLong("CustomFieldWidth", 9);
+	m_customFieldHeight = config->ReadLong("CustomFieldHeight", 9);
+	m_customMineCount = config->ReadLong("CustomMineCount", 10);
 
 	Bind(wxEVT_CLOSE_WINDOW, &MainWindow::MainWindow_OnClose, this);
 }
@@ -129,7 +133,18 @@ void MainWindow::MenuBar_OnItemSelect(wxCommandEvent& event)
 	{
 		if (id == ID_GAME_CUSTOM)
 		{
-			// TODO: Display a dialog prompting for the custom field size and mine count.
+			CustomFieldDialog dlg(this, m_customFieldWidth, m_customFieldHeight, m_customMineCount);
+
+			if (const auto result = dlg.ShowModal(); result == wxID_CANCEL)
+			{
+				m_menuBar->Check(id, false);
+				m_menuBar->Check(m_gameDifficulty, true);
+				break;
+			}
+
+			m_customFieldWidth = dlg.GetCustomWidth();
+			m_customFieldHeight = dlg.GetCustomHeight();
+			m_customMineCount = dlg.GetCustomMineCount();
 		}
 
 		for (auto i = static_cast<int>(ID_GAME_BEGINNER); i <= static_cast<int>(ID_GAME_CUSTOM); i++)
@@ -177,6 +192,9 @@ void MainWindow::MainWindow_OnClose([[maybe_unused]] wxCloseEvent& event)
 	config->Write("MainWindowPosX", pos.x);
 	config->Write("MainWindowPosY", pos.y);
 	config->Write("GameDifficulty", m_gameDifficulty);
+	config->Write("CustomFieldWidth", m_customFieldWidth);
+	config->Write("CustomFieldHeight", m_customFieldHeight);
+	config->Write("CustomMineCount", m_customMineCount);
 
 	Destroy();
 }
