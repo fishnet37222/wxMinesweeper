@@ -98,12 +98,15 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxDefaultPo
 
 	if (posX == -1 && posY == -1)
 	{
-	CenterOnScreen();
-}
+		CenterOnScreen();
+	}
 	else
 	{
 		SetPosition({ posX, posY });
 	}
+
+	m_gameDifficulty = config->ReadLong("GameDifficulty", ID_GAME_BEGINNER);
+	m_menuBar->Check(m_gameDifficulty, true);
 
 	Bind(wxEVT_CLOSE_WINDOW, &MainWindow::MainWindow_OnClose, this);
 }
@@ -111,24 +114,43 @@ MainWindow::MainWindow() : wxFrame(nullptr, wxID_ANY, "Minesweeper", wxDefaultPo
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 void MainWindow::MenuBar_OnItemSelect(wxCommandEvent& event)
 {
-	switch (event.GetId())
+	switch (const auto id = event.GetId(); id)
 	{
-		case ID_GAME_EXIT:
+	case ID_GAME_EXIT:
+	{
+		Close();
+		break;
+	}
+
+	case ID_GAME_BEGINNER:
+	case ID_GAME_INTERMEDIATE:
+	case ID_GAME_EXPERT:
+	case ID_GAME_CUSTOM:
+	{
+		if (id == ID_GAME_CUSTOM)
 		{
-			Close();
-			break;
+			// TODO: Display a dialog prompting for the custom field size and mine count.
 		}
 
-		case ID_GAME_NEW:
-		case ID_GAME_BEGINNER:
-		case ID_GAME_INTERMEDIATE:
-		case ID_GAME_EXPERT:
-		case ID_GAME_CUSTOM:
-		case ID_GAME_BEST_TIMES:
-		case ID_HELP_HOW_TO_PLAY:
-		case ID_HELP_ABOUT:
-		default:
-			break;
+		for (auto i = static_cast<int>(ID_GAME_BEGINNER); i <= static_cast<int>(ID_GAME_CUSTOM); i++)
+		{
+			if (i != id)
+			{
+				m_menuBar->Check(i, false);
+			}
+		}
+
+		m_gameDifficulty = id;
+
+		break;
+	}
+
+	case ID_GAME_NEW:
+	case ID_GAME_BEST_TIMES:
+	case ID_HELP_HOW_TO_PLAY:
+	case ID_HELP_ABOUT:
+	default:
+		break;
 	}
 }
 
@@ -154,6 +176,7 @@ void MainWindow::MainWindow_OnClose([[maybe_unused]] wxCloseEvent& event)
 
 	config->Write("MainWindowPosX", pos.x);
 	config->Write("MainWindowPosY", pos.y);
+	config->Write("GameDifficulty", m_gameDifficulty);
 
 	Destroy();
 }

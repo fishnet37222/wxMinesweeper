@@ -18,6 +18,7 @@ private:
 	SevenSegmentDisplay* m_ssdElapsedTime{};
 	wxBitmapButton* m_btnNewGame{};
 	MineField* m_mineField{};
+	int m_gameDifficulty{};
 
 	void MenuBar_OnItemSelect(wxCommandEvent& event);
 	void MineField_OnLeftDown(wxMouseEvent& event);
