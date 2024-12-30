@@ -16,6 +16,9 @@
     <Filter Include="Bitmaps">
       <UniqueIdentifier>{857aadef-8c45-4e71-8ea2-754d056c0489}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vcpkg">
+      <UniqueIdentifier>{5dc7f98b-f4e3-454d-9c33-4ed82142ee4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -55,6 +58,12 @@
     </None>
     <None Include="Bitmaps\flag-small.xpm">
       <Filter>Bitmaps</Filter>
+    </None>
+    <None Include="vcpkg.json">
+      <Filter>vcpkg</Filter>
+    </None>
+    <None Include="vcpkg-configuration.json">
+      <Filter>vcpkg</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
