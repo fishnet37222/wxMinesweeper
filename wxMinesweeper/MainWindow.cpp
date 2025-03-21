@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "MainWindow.h"
+#include "AboutDialog.h"
 
 #include "bitmaps/smile-1.xpm"
 #include "bitmaps/smile-2.xpm"
@@ -93,6 +94,14 @@ void MainWindow::MenuBar_OnItemSelect(wxCommandEvent& event)
 		case ID_GAME_EXIT:
 		{
 			Close();
+
+			break;
+		}
+
+		case ID_HELP_ABOUT:
+		{
+			AboutDialog dlg(this);
+			dlg.ShowModal();
 
 			break;
 		}
